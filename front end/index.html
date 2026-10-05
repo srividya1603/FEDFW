@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase</title><link rel="stylesheet" href="css/style.css"></head><body>
+<nav class="nav"><span class="logo">📅 EventEase</span><div class="row"><a class="btn o" href="login.html">Login</a><a class="btn" href="signup.html">Sign up</a></div></nav>
+<header class="hero"><h1>Your Event. Your Way.</h1><p>Plan, organize, celebrate and manage every event — from intimate family gatherings to large professional conferences — all in one place.</p><div class="row" style="justify-content:center"><a class="btn" href="create-event.html">Create Your Event</a><a class="btn o" href="events.html">Explore Events</a></div><p><i>Every Event. One Smart Place.</i></p></header>
+<section class="sec"><h2>Event Categories</h2><div class="grid" id="cats"></div></section>
+<section class="sec"><h2>Features</h2><div class="grid" id="f"></div></section>
+<section class="sec"><h2>Featured Events</h2><div class="grid" id="ev"></div></section>
+<footer><b class="logo">EventEase</b><br>Every Event. One Smart Place.<br>About · Events · Contact · Privacy · Terms<br>© 2026 EventEase. All Rights Reserved.</footer>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script>
+<script>
+$("#cats").innerHTML=[["💍","Wedding"],["🎂","Birthday"],["💐","Engagement"],["👶","Baby Shower"],["🏠","Housewarming"],["🎓","Reunion"],["💼","Corporate"],["🎤","Conference"],["🧑‍🏫","Workshop"],["🎵","Concert"],["🤝","Networking"],["🌍","Community"]].map(c=>`<a class="card" style="text-decoration:none;color:inherit;text-align:center" href="events.html?cat=${c[1]}"><h1>${c[0]}</h1>${c[1]}</a>`).join("")+`<a class="card" style="text-align:center;color:var(--p);text-decoration:none" href="create-event.html"><h1>＋</h1>Create Custom Event</a>`;
+$("#f").innerHTML=[["🗓","Event Creation","Create personalized event pages."],["👥","Guest Management","Manage invitations and attendees."],["🎟","Ticket Management","Multiple ticket types."],["⏱","Smart Scheduling","Timeline for every event."],["💳","Payment Tracking","Simulated payments."],["🔔","Notifications","Reminders and updates."],["🎨","Customization","Personal & professional modes."],["📈","Analytics","Event performance."]].map(f=>`<div class="card"><h1>${f[0]}</h1><h3>${f[1]}</h3><p style="color:var(--mu)">${f[2]}</p></div>`).join("");
+$("#ev").innerHTML=getData("events").filter((_,i)=>i%3==0).map(card).join("");
+</script></body></html>

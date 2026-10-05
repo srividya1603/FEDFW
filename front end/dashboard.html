@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase — Dashboard</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="main"><h1 id="w"></h1><div class="grid" id="st"></div><h2 style="margin:24px 0 10px">Event Registrations</h2><div class="card" id="ch"></div><h2 style="margin:24px 0 10px">Recent Activity</h2><div class="card" id="ac"></div></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script><script>
+if(shell("dashboard.html")){const u=me(),R=getData("registrations"),E=getData("events"),mine=R.filter(r=>r.userId==u.id),all=u.role!="user";
+w.textContent=`Welcome back, ${u.name}! 👋`;const S=all?[["Total Events",E.length],["Registrations",R.length],["Tickets Sold",R.reduce((a,r)=>a+r.qty,0)],["Revenue",inr(R.reduce((a,r)=>a+r.total,0))],["Attendance",Math.round(R.filter(r=>r.attended).length/R.length*100)+"%"]]:[["Registered Events",mine.length],["Tickets Purchased",mine.reduce((a,r)=>a+r.qty,0)],["Upcoming",mine.length],["Attended",mine.filter(r=>r.attended).length]];
+st.innerHTML=S.map(s=>`<div class="card stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join("");
+ch.innerHTML=E.map(e=>`<p>${e.name} <small>${e.registered}/${e.capacity}</small></p><div class="bar"><i style="width:${e.registered/e.capacity*100}%"></i></div>`).join("");
+ac.innerHTML=getData("notifications").filter(n=>n.uid==u.id).map(n=>`<p>${n.msg}</p>`).join("")||"No activity yet."}
+</script></body></html>

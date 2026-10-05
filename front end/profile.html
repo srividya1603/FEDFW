@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="main"><h1>My Profile</h1><div class="card" style="max-width:480px"><div class="ev"><div class="bn" id="av" style="width:90px;height:90px;border-radius:50%;font-size:2rem"></div></div><p id="info"></p><input id="n" placeholder="Name"><input id="ph" placeholder="Phone"><input id="pw" type="password" placeholder="New password (optional)"><div class="err-t" id="er"></div><button class="btn" onclick="sv()">Save Changes</button></div></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script>
+<script>
+if(shell("profile.html")){const u=me();av.textContent=u.name[0];n.value=u.name;ph.value=u.phone||"";
+info.innerHTML=`${u.email} · <b>${u.role}</b><br>Events created: ${getData("events").filter(e=>e.organizer==u.name).length} · Registered: ${getData("registrations").filter(r=>r.userId==u.id).length}`;
+window.sv=()=>{if(!n.value.trim())return er.textContent="Name required";if(!/^\d{10}$/.test(ph.value))return er.textContent="Phone must be 10 digits";if(pw.value&&pw.value.length<6)return er.textContent="Password min 6 chars";
+updateData("users",u.id,{name:n.value,phone:ph.value,...(pw.value?{password:pw.value}:{})});toast("Profile updated");setTimeout(()=>location.reload(),700)}}
+</script></body></html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="main" id="pg"></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script>
+<script>
+if(shell("events.html")){const id=+new URLSearchParams(location.search).get("id"),e=evOf(id),u=me(),can=u.role!="user";let tm;
+window.draw=function(){const S=getData("schedules").filter(s=>s.eventId==id),G=getData("guests").filter(g=>g.eventId==id),pers=e.mode=="personal";
+pg.innerHTML=`<div class="card ev"><div class="bn" style="height:180px;font-size:5rem">${e.emoji}</div><span class="tag">${e.category}</span> <span class="tag">${e.mode}</span><h1>${e.name}</h1><p>${e.desc}</p><p>👤 ${e.organizer} · ✉ contact@eventease.com<br>📅 ${e.date} ⏰ ${e.time}<br>📍 ${e.venue}, ${e.city}<br>👥 ${e.registered}/${e.capacity} registered · ${e.capacity-e.registered} seats left · ${pers?"Free (RSVP)":"From "+inr(e.price)}</p>
+<h3>Event Starts In</h3><h2 id="cd" class="logo"></h2><div class="row"><button class="btn" onclick="${pers?"rsvp":"reg"}(${id})">${pers?"RSVP Now":"Register Now"}</button><button class="btn o" onclick="navigator.clipboard?.writeText(location.href);toast('Link copied','inf')">Share</button></div></div>
+<h2 style="margin:20px 0 10px">Schedule</h2><div class="card">${S.map(s=>`<p>⏰ <b>${s.time}</b> — ${s.name} <small>(${s.speaker}, ${s.loc})</small> ${can?`<button class="btn d" style="padding:2px 8px" onclick="delS(${s.id})">✕</button>`:""}</p>`).join("")||"No sessions yet."}${can?`<div class="row"><input id="sn" placeholder="Session name" style="flex:2"><input id="st" placeholder="10:00 AM" style="flex:1"><button class="btn" onclick="addS()">Add session</button></div>`:""}</div>`;tick()};
+function tick(){clearInterval(tm);const f=()=>{let d=new Date(e.date+"T10:00:00")-Date.now();const x=$("#cd");if(!x)return;if(d<0){x.textContent="Event completed";return}const p=n=>String(n).padStart(2,"0");x.textContent=`${p(d/864e5|0)} Days ${p(d/36e5%24|0)} Hours ${p(d/6e4%60|0)} Min ${p(d/1e3%60|0)} Sec`};f();tm=setInterval(f,1000)}
+window.addS=()=>{if(!sn.value||!st.value)return toast("Enter session name and time","err");saveData("schedules",[...getData("schedules"),{id:Date.now(),eventId:id,time:st.value,name:sn.value,speaker:"TBA",loc:e.venue}]);notify("📅 Event schedule updated");toast("Session added");draw()};
+window.delS=sid=>confirmBox("Delete session?",()=>{deleteData("schedules",sid);draw()});draw()}
+</script></body></html>

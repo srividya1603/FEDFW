@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase — Admin</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="main"><h1>Admin Dashboard</h1><div class="grid" id="st"></div><h2>Users</h2><div class="card scroll" id="u"></div><h2>Events</h2><div class="card scroll" id="e"></div></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script><script>
+if(shell("admin.html")){if(me().role!="admin")location="dashboard.html";window.draw=function(){const U=getData("users"),E=getData("events"),R=getData("registrations");
+st.innerHTML=[["Users",U.length],["Organizers",U.filter(x=>x.role=="organizer").length],["Events",E.length],["Registrations",R.length],["Revenue",inr(R.reduce((a,r)=>a+r.total,0))]].map(s=>`<div class="card stat"><b>${s[1]}</b><span>${s[0]}</span></div>`).join("");
+u.innerHTML="<table><tr><th>Name<th>Email<th>Role<th>Action</tr>"+U.map(x=>`<tr><td>${x.name}<td>${x.email}<td>${x.role}<td><button class="btn o" onclick="blk(${x.id})">${x.blocked?"Unblock":"Block"}</button> <button class="btn d" onclick="confirmBox(&quot;Delete user?&quot;,()=>{deleteData(&quot;users&quot;,${x.id});draw()})">Delete</button>`).join("")+"</table>";
+e.innerHTML="<table><tr><th>Event<th>City<th>Seats<th>Action</tr>"+E.map(x=>`<tr><td>${x.name}<td>${x.city}<td>${x.registered}/${x.capacity}<td><button class="btn d" onclick="confirmBox(&quot;Delete event?&quot;,()=>{deleteData(&quot;events&quot;,${x.id});draw()})">Delete</button>`).join("")+"</table>"};
+window.blk=id=>{const x=getData("users").find(u=>u.id==id);updateData("users",id,{blocked:!x.blocked});draw()};draw()}
+</script></body></html>

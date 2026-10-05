@@ -1,0 +1,9 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="main"><h1>Discover Amazing Events</h1><div class="row"><input id="q" placeholder="Search events, categories or locations..." oninput="draw()"><select id="c" onchange="draw()"><option value="">All categories</option></select><select id="m" onchange="draw()"><option value="">Personal + Professional</option><option value="personal">Personal</option><option value="professional">Professional</option></select><select id="on" onchange="draw()"><option value="">Online / Offline</option><option value="1">Online</option><option value="0">Offline</option></select><select id="o" onchange="draw()"><option value="d">Upcoming</option><option value="l">Price: Low to High</option><option value="h">Price: High to Low</option><option value="p">Most Popular</option></select></div><div class="grid" id="g"></div><p><button class="btn o" onclick="lim+=6;draw()">Load More</button></p></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script>
+<script>
+if(shell("events.html")){let lim=6;[...new Set(getData("events").map(e=>e.category))].forEach(x=>c.innerHTML+=`<option>${x}</option>`);c.value=new URLSearchParams(location.search).get("cat")||"";
+function draw(){const s=q.value.toLowerCase();let l=getData("events").filter(e=>(e.name+e.category+e.city+e.organizer).toLowerCase().includes(s)&&(!c.value||e.category==c.value)&&(!m.value||e.mode==m.value)&&(!on.value||e.online==(on.value=="1")));
+const k=o.value;l.sort((a,b)=>k=="l"?a.price-b.price:k=="h"?b.price-a.price:k=="p"?b.registered-a.registered:a.date.localeCompare(b.date));
+g.innerHTML=l.slice(0,lim).map(card).join("")||"<p>🔍 No events found.</p>"}draw()}
+</script></body></html>

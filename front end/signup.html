@@ -1,0 +1,8 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventEase — Signup</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="card auth"><h2 class="logo">Create Account</h2><input id="n" placeholder="Full name"><input id="e" placeholder="Email"><input id="ph" placeholder="Phone"><input id="p" type="password" placeholder="Password" oninput="$(&quot;#s&quot;).textContent=&quot;Strength: &quot;+(p.value.length<6?&quot;Weak&quot;:/\d/.test(p.value)&&/[A-Z]/.test(p.value)?&quot;Strong&quot;:&quot;Medium&quot;)"><small id="s"></small><input id="c" type="password" placeholder="Confirm password"><select id="r"><option value="user">Attendee</option><option value="organizer">Organizer</option></select><div class="err-t" id="er"></div><button class="btn" onclick="go()">Sign up</button><p><a href="login.html">Already registered?</a></p></div>
+<script src="js/storage.js"></script><script src="js/app.js"></script><script src="js/events.js"></script><script>
+function go(){const u=getData("users"),er=m=>$("#er").textContent=m;
+if(!n.value.trim())return er("Name required");if(!/^\S+@\S+\.\S+$/.test(e.value))return er("Invalid email");if(u.some(x=>x.email==e.value))return er("Email already registered");
+if(!/^\d{10}$/.test(ph.value))return er("Phone must be 10 digits");if(p.value.length<6)return er("Password min 6 chars");if(p.value!=c.value)return er("Passwords do not match");
+saveData("users",[...u,{id:Date.now(),name:n.value,email:e.value,phone:ph.value,password:p.value,role:r.value,blocked:false}]);toast("Account created");setTimeout(()=>location="login.html",900)}
+</script></body></html>
